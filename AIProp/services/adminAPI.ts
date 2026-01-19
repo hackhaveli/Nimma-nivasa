@@ -1,6 +1,27 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_URL = 'http://10.189.166.102:3000/api';
+const API_URL = 'https://nimma-nivasa.onrender.com/api';
+
+// Request timeout utility
+const fetchWithTimeout = async (url: string, options: RequestInit = {}, timeout = 30000) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+
+    try {
+        const response = await fetch(url, {
+            ...options,
+            signal: controller.signal,
+        });
+        clearTimeout(id);
+        return response;
+    } catch (error: any) {
+        clearTimeout(id);
+        if (error.name === 'AbortError') {
+            throw new Error('Request timeout - backend is waking up, please try again in 30 seconds');
+        }
+        throw error;
+    }
+};
 
 // Get authentication token
 const getToken = async () => {
@@ -18,7 +39,7 @@ export const adminAPI = {
         const token = await getToken();
         if (!token) throw new Error('Authentication required');
 
-        const response = await fetch(`${API_URL}/admin/stats`, {
+        const response = await fetchWithTimeout(`${API_URL}/admin/stats`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'bypass-tunnel-reminder': 'true',
@@ -44,7 +65,7 @@ export const adminAPI = {
             ...(search && { search })
         });
 
-        const response = await fetch(`${API_URL}/admin/users?${queryParams}`, {
+        const response = await fetchWithTimeout(`${API_URL}/admin/users?${queryParams}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'bypass-tunnel-reminder': 'true',
@@ -64,7 +85,7 @@ export const adminAPI = {
         const token = await getToken();
         if (!token) throw new Error('Authentication required');
 
-        const response = await fetch(`${API_URL}/admin/users/${userId}`, {
+        const response = await fetchWithTimeout(`${API_URL}/admin/users/${userId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -85,7 +106,7 @@ export const adminAPI = {
         const token = await getToken();
         if (!token) throw new Error('Authentication required');
 
-        const response = await fetch(`${API_URL}/admin/user/${userId}/properties`, {
+        const response = await fetchWithTimeout(`${API_URL}/admin/user/${userId}/properties`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'bypass-tunnel-reminder': 'true',
@@ -111,7 +132,7 @@ export const adminAPI = {
             status
         });
 
-        const response = await fetch(`${API_URL}/admin/properties?${queryParams}`, {
+        const response = await fetchWithTimeout(`${API_URL}/admin/properties?${queryParams}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'bypass-tunnel-reminder': 'true',
@@ -131,7 +152,7 @@ export const adminAPI = {
         const token = await getToken();
         if (!token) throw new Error('Authentication required');
 
-        const response = await fetch(`${API_URL}/admin/properties/${propertyId}`, {
+        const response = await fetchWithTimeout(`${API_URL}/admin/properties/${propertyId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -152,7 +173,7 @@ export const adminAPI = {
         const token = await getToken();
         if (!token) throw new Error('Authentication required');
 
-        const response = await fetch(`${API_URL}/admin/properties/${propertyId}/status`, {
+        const response = await fetchWithTimeout(`${API_URL}/admin/properties/${propertyId}/status`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
