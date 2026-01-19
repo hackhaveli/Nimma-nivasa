@@ -39,7 +39,7 @@ app.use('/api/upload', uploadRoutes);
 app.get('/health', (req, res) => {
     res.json({
         status: 'OK',
-        message: 'AIProp Backend is running',
+        message: 'Nimma Nivasa Backend is running',
         mongodb: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'
     });
 });
