@@ -40,6 +40,12 @@
     "experiments": {
       "typedRoutes": true
     },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a4eec1e9-4eef-4101-8129-dd959bc9779b"
+    },
     "extra": {
       "router": {
         "origin": "https://nimmanivasa.com/"
