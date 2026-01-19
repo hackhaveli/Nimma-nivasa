@@ -119,9 +119,47 @@ router.get('/', async (req, res) => {
 
     } catch (error) {
         console.error('Get properties error:', error);
-        res.status(500).json({ error: 'Failed to fetch properties' });
+        res.status(500).json({
+            error: 'Failed to fetch properties',
+            message: error.message
+        });
     }
 });
+
+// @route   GET /api/properties/all
+// @desc    Get all properties without filters (for admin/debugging)
+// @access  Public
+router.get('/all', async (req, res) => {
+    try {
+        const { sortBy = 'createdAt', order = 'desc', limit = 100 } = req.query;
+
+        const sortOrder = order === 'asc' ? 1 : -1;
+        const sortOptions = { [sortBy]: sortOrder };
+
+        const properties = await Property.find({ isActive: true })
+            .populate('owner', 'name mobile avatar')
+            .sort(sortOptions)
+            .limit(Number(limit))
+            .lean();
+
+        const transformedProperties = properties.map(transformProperty);
+
+        res.json({
+            success: true,
+            count: transformedProperties.length,
+            properties: transformedProperties
+        });
+
+    } catch (error) {
+        console.error('Get all properties error:', error);
+        res.status(500).json({
+            error: 'Failed to fetch properties',
+            message: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
+    }
+});
+
 
 // @route   GET /api/properties/nearby
 // @desc    Get nearby properties with fallback logic

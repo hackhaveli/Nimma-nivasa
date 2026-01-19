@@ -33,6 +33,27 @@ const removeToken = async () => {
     }
 };
 
+// Request timeout utility
+const fetchWithTimeout = async (url: string, options: RequestInit = {}, timeout = 30000) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+
+    try {
+        const response = await fetch(url, {
+            ...options,
+            signal: controller.signal,
+        });
+        clearTimeout(id);
+        return response;
+    } catch (error: any) {
+        clearTimeout(id);
+        if (error.name === 'AbortError') {
+            throw new Error('Request timeout - please check your connection');
+        }
+        throw error;
+    }
+};
+
 // Auth API
 export const authAPI = {
     register: async (name: string, mobile: string, password: string, email?: string) => {
