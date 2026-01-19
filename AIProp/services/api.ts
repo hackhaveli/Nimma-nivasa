@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Change this to your backend URL
 // For development: use your computer's local IP address (find with ipconfig on Windows)
 // For production: use your deployed backend URL
-const API_URL = 'http://10.189.166.102:3000/api'; // Local network URL
+const API_URL = 'https://nimma-nivasa.onrender.com/api'; // Production Render URL
 
 // Get authentication token
 const getToken = async () => {
