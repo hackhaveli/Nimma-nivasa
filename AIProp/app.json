@@ -1,0 +1,44 @@
+{
+    "expo": {
+        "name": "Nimma nivasa",
+        "slug": "nimma-nivasa",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/images/logo.png",
+        "scheme": "nimmanivasa",
+        "userInterfaceStyle": "automatic",
+        "newArchEnabled": true,
+        "splash": {
+            "image": "./assets/images/logo.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "ios": {
+            "supportsTablet": false,
+            "bundleIdentifier": "com.nimmanivasa.app"
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/images/logo.png",
+                "backgroundColor": "#ffffff"
+            },
+            "package": "com.nimmanivasa.app"
+        },
+        "web": {
+            "favicon": "./assets/images/logo.png"
+        },
+        "plugins": [
+            [
+                "expo-router",
+                {
+                    "origin": "https://nimmanivasa.com/"
+                }
+            ],
+            "expo-font",
+            "expo-web-browser"
+        ],
+        "experiments": {
+            "typedRoutes": true
+        }
+    }
+}
