@@ -18,6 +18,7 @@ import { router } from 'expo-router';
 import { useApp } from '@/contexts/AppContext';
 import { useLocation } from '@/hooks/useLocation';
 import { propertiesAPI } from '@/services/api';
+import { PropertyImage } from '@/components/PropertyImage';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import type { Property } from '@/mocks/properties';
@@ -317,7 +318,7 @@ export default function HomeScreen() {
                 activeOpacity={0.7}
             >
                 <View style={styles.imageContainer}>
-                    <Image source={{ uri: property.images[0] }} style={styles.propertyImage} />
+                    <PropertyImage uri={property.images[0]} style={styles.propertyImage} />
                     <View style={styles.purposeBadge}>
                         <Text style={styles.purposeBadgeText}>{property.purpose.toUpperCase()}</Text>
                     </View>
@@ -723,7 +724,7 @@ export default function HomeScreen() {
                                     onPress={() => router.push({ pathname: '/property/[id]', params: { id: property.id } })}
                                     activeOpacity={0.9}
                                 >
-                                    <Image source={{ uri: property.images[0] }} style={styles.featuredImage} />
+                                    <PropertyImage uri={property.images[0]} style={styles.featuredImage} />
                                     <View style={styles.featuredOverlay}>
                                         <View style={styles.featuredBadge}>
                                             <Text style={styles.featuredBadgeText}>FEATURED</Text>
